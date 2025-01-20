@@ -4,28 +4,23 @@ server:
 spring:
   datasource:
     driver-class-name: "com.mysql.cj.jdbc.Driver"
-    url: "jdbc:mysql://127.0.0.1:3308/location"
-    username: "root"
-    password: "tkdals2"
+    url: "jdbc:mysql://santino-mysql.cp2644kcsqkx.ap-northeast-2.rds.amazonaws.com:3306/board"
+    username: "admin"
+    password: "ichbinsantino0381"
+
+#    driver-class-name: "com.mysql.cj.jdbc.Driver"
+#    url: "jdbc:mysql://127.0.0.1:3308/warehouseLocation"
+#    username: "root"
+#    password: "tkdals2"
+
 #  jwt:
 #    secret: "vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbala"
-
-
   jpa:
+    hibernate:
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
-        ddl-auto: create
         format_sql: true
         highlight_sql: true
         use_sql_comments: true
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
-
-#        //사진 업로드 경우에 해당 코드 작성
-#// spring.servlet.multipart.max-file-size=1000MB
-#// spring.servlet.multipart.max-request-size=1000MB
-
-#// upload.path=c:/hyj/....upload path라는 내가원하는 곳에 path라는 이름으로 사용 가능.
-

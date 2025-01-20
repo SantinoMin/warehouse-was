@@ -37,9 +37,6 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
-
-
-
     // DB
     implementation 'mysql:mysql-connector-java:8.0.32'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'

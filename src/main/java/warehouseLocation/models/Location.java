@@ -23,7 +23,6 @@ import lombok.Setter;
 @Builder
 @Table(name = "location")
 public class Location {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "location_id", nullable = false, unique = true)
@@ -41,7 +40,4 @@ public class Location {
 
   @Column(name = "floor_height")
   private Long floorHeight;
-
-  public Location(String d, int i, int i1) {
-  }
 }

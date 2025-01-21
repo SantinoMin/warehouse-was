@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  profiles:
+    active: dev
   datasource:
     driver-class-name: "com.mysql.cj.jdbc.Driver"
     url: "jdbc:mysql://santino-mysql.cp2644kcsqkx.ap-northeast-2.rds.amazonaws.com:3306/board"

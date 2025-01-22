@@ -1,0 +1,18 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+    url: "jdbc:mysql://santino-mysql.cp2644kcsqkx.ap-northeast-2.rds.amazonaws.com:3306/board"
+    username: "admin"
+    password: "ichbinsantino0381"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+

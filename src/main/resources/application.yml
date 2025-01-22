@@ -10,13 +10,6 @@ spring:
     username: "admin"
     password: "ichbinsantino0381"
 
-#    driver-class-name: "com.mysql.cj.jdbc.Driver"
-#    url: "jdbc:mysql://127.0.0.1:3308/warehouseLocation"
-#    username: "root"
-#    password: "tkdals2"
-
-#  jwt:
-#    secret: "vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbala"
   jpa:
     hibernate:
       ddl-auto: update

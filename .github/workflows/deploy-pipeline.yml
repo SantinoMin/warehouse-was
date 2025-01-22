@@ -22,11 +22,14 @@ jobs:
         run: ./gradlew build  # 또는 Maven 사용시 mvn clean package
 
       - name: Copy JAR file to EC2
-        run: scp build/libs/demo-0.0.1.jar ubuntu@43.203.232.106:/home/ubuntu/deploy/
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 43.203.232.106 >> ~/.ssh/known_hosts  # EC2 서버의 호스트 키 추가
+          scp -i ~/.ssh/id_rsa build/libs/demo-0.0.1.jar ubuntu@43.203.232.106:/home/ubuntu/deploy/  # 비공개 키를 GitHub Secrets에서 가져옴
 
       - name: Deploy JAR file on EC2
         run: |
-          ssh ubuntu@43.203.232.106 << 'EOF'
+          ssh -i ~/.ssh/id_rsa ubuntu@43.203.232.106 << 'EOF'
           pkill -f demo-0.0.1.jar
           nohup java -jar /home/ubuntu/deploy/demo-0.0.1.jar > /dev/null 2>&1 &
           EOF

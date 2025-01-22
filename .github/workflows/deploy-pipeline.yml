@@ -1,0 +1,32 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시될 때마다 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}  # GitHub Secrets에서 비공개 키를 가져옵니다.
+
+      - name: Build the JAR file
+        run: ./gradlew build  # 또는 Maven 사용시 mvn clean package
+
+      - name: Copy JAR file to EC2
+        run: scp build/libs/demo-0.0.1.jar ubuntu@43.203.232.106:/home/ubuntu/deploy/
+
+      - name: Deploy JAR file on EC2
+        run: |
+          ssh ubuntu@43.203.232.106 << 'EOF'
+          pkill -f demo-0.0.1.jar
+          nohup java -jar /home/ubuntu/deploy/demo-0.0.1.jar > /dev/null 2>&1 &
+          EOF

@@ -1,14 +1,14 @@
-stages:
-  - build
-  - deploy
-
-build:
-  stage: build
-  script:
-    - ./gradlew clean build  # Gradle 빌드를 실행
-
-deploy:
-  stage: deploy
-  script:
-    - scp build/libs/demo-0.0.1.jar ubuntu@43.203.232.106:/home/ubuntu/deploy  # 서버에 JAR 파일 전송
-    - ssh ubuntu@43.203.232.106 'java -jar /home/ubuntu/deploy/demo-0.0.1.jar'  # 서버에서 JAR 파일 실행
+#stages:
+#  - build
+#  - deploy
+#
+#build:
+#  stage: build
+#  script:
+#    - ./gradlew clean build  # Gradle 빌드를 실행
+#
+#deploy:
+#  stage: deploy
+#  script:
+#    - scp build/libs/demo-0.0.1.jar ubuntu@43.203.232.106:/home/ubuntu/deploy  # 서버에 JAR 파일 전송
+#    - ssh ubuntu@43.203.232.106 'java -jar /home/ubuntu/deploy/demo-0.0.1.jar'  # 서버에서 JAR 파일 실행

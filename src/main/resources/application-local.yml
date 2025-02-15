@@ -2,24 +2,17 @@ server:
   port: 8080
 
 spring:
-  profiles:
-    active: dev
   datasource:
     driver-class-name: "com.mysql.cj.jdbc.Driver"
-    url: "jdbc:mysql://santino-mysql.cp2644kcsqkx.ap-northeast-2.rds.amazonaws.com:3306/board"
-    username: "admin"
-    password: "ichbinsantino0381"
-
-#    driver-class-name: "com.mysql.cj.jdbc.Driver"
-#    url: "jdbc:mysql://127.0.0.1:3308/warehouseLocation"
-#    username: "root"
-#    password: "tkdals2"
+    url: "jdbc:mysql://127.0.0.1:3308/warehouseLocation"
+    username: "root"
+    password: "tkdals2"
 
 #  jwt:
 #    secret: "vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbala"
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:

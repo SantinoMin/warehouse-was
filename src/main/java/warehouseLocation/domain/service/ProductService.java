@@ -47,6 +47,15 @@ public class ProductService {
     //2.1(GET) /manage/product : 상품 검색
     public List<ProductResDto.ProductSearch> search(String productName) throws Exception {
 
+
+
+
+        
+
+
+
+
+
         /**
          * @Test
          * 1) 검색한 값이 없을 경우
@@ -220,7 +229,7 @@ public class ProductService {
 //
 //        // body에서 입력한 값으로 productInfo 업데이트
         productInfo.setProductName(body.getProductName());
-        productInfo.setCategoryName(categoryName);
+//        productInfo.setCategoryName(categoryName);
         productInfo.setImageUrl(body.getImageUrl());
         productInfo.setExpiredDate(body.getExpiredDate());
         productInfo.setPrice(body.getPrice());

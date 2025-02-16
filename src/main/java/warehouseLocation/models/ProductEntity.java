@@ -38,17 +38,23 @@ public class ProductEntity {
   @Column(name = "product_name", nullable = false)
   private String productName;
 
-  @Column(name = "category_name", nullable = false)
-  private String categoryName;
-
-  @Column(name = "expired_date", nullable = false)
-  private LocalDate expiredDate;
+  @Column(name = "price", nullable = false)
+  private String price;
 
   @Column(name = "image_url", nullable = false)
   private String imageUrl;
 
-  @Column(name = "price", nullable = false)
-  private String price;
+  @Column(name = "category_id", nullable = true, unique = true)
+  private Long categoryId;
+
+  @Column(name = "expired_date", nullable = false)
+  private LocalDate expiredDate;
+
+  @Column(name = "status", nullable = true)
+  private String status;
+
+  @Column(name = "is_valid", nullable = false)
+  private boolean isValid;
 
   @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
   private LocalDateTime createdAt;
@@ -64,17 +70,7 @@ public class ProductEntity {
   @JoinColumn(name = "product_id", referencedColumnName = "product_id")
   private List<Location> location;
 
-  @Column(name = "category_id", nullable = true, unique = true)
-  private Long categoryId;
 
-  @Column(name = "user_id", nullable = true, unique = true)
-  private Long userId;
-
-  @Column(name = "status", nullable = true)
-  private String status;
-
-  @Column(name = "is_valid", nullable = false)
-  private boolean isValid;
 };
 
 

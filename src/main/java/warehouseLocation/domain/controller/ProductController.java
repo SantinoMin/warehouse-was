@@ -1,8 +1,13 @@
 package warehouseLocation.domain.controller;
 
 import jakarta.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,29 +18,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import warehouseLocation.domain.dto.AreaReqDto;
-import warehouseLocation.domain.dto.FloorReqDto;
 import warehouseLocation.domain.dto.ProductReqDto;
 import warehouseLocation.domain.dto.ProductResDto;
 import warehouseLocation.domain.dto.ProductResDto.Message;
 import warehouseLocation.domain.dto.ProductResDto.ProductSearch;
-import warehouseLocation.domain.dto.RackReqDto;
 import warehouseLocation.domain.service.*;
+import warehouseLocation.global.utills.response.error.ErrorMessage;
 
 @RestController
-//@Slf4j // 응답을 기록하는 데 도움이 되며 주로 디버깅 목적
 @RequiredArgsConstructor
+//@Slf4j 아래 log 변수나 해당 어노테이션 둘 중 하나만 사용하기(같은 기능)
 @RequestMapping("/manage")
 public class ProductController {
 
-
-
     private final ProductService productService;
+    private static final Logger log = LoggerFactory.getLogger(ProductController.class); // @Slf4j 둘 중 하나만 사용
 
     //2.1(GET) /manage/product : 상품 검색
     @GetMapping("/product")
-    public List<ProductSearch> search(@RequestParam String productName) throws Exception {
-        return this.productService.search(productName);
+    public ResponseEntity<List<ProductSearch>> search(@RequestParam String productName) throws Exception {
+        try {
+            List<ProductSearch> product = productService.search(productName);
+            if(product == null || product.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+            }
+            return ResponseEntity.ok(product);
+        }catch(RuntimeException e){
+            log.error("Product Not Found", productName, e);
+            throw new Exception(ErrorMessage.NOT_FOUND_PRODUCT);
+        }
     }
 
     //  2.2 (GET) /manage/product/{product_id} : 상품 정보

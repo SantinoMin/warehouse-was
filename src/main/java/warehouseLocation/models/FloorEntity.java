@@ -42,7 +42,4 @@ public class FloorEntity {
 
   @Column(name = "is_valid", nullable = false)
   private Boolean isValid;
-
-  @Column(name = "status", nullable = false)
-  private Boolean status;
   };

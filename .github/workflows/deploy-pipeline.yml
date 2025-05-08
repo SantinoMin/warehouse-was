@@ -1,35 +1,36 @@
-#name: Deploy to EC2
-#
-#on:
-#  push:
-#    branches:
-#      - main  # main 브랜치에 푸시될 때마다 실행
-#
-#jobs:
-#  deploy:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Check out the repository
-#        uses: actions/checkout@v2
-#
-#      - name: Set up SSH
-#        uses: webfactory/ssh-agent@v0.5.3
-#        with:
-#          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}  # GitHub Secrets에서 비공개 키를 가져옵니다.
-#
-#      - name: Build the JAR file
-#        run: ./gradlew build  # 또는 Maven 사용시 mvn clean package
-#
-#      - name: Copy JAR file to EC2
-#        run: |
-#          mkdir -p ~/.ssh
-#          ssh-keyscan -H 43.203.232.106 >> ~/.ssh/known_hosts  # EC2 서버의 호스트 키 추가
-#          scp -i ~/.ssh/id_rsa build/libs/demo-0.0.1.jar ubuntu@43.203.232.106:/home/ubuntu/deploy/  # 비공개 키를 GitHub Secrets에서 가져옴
-#
-#      - name: Deploy JAR file on EC2
-#        run: |
-#          ssh -i ~/.ssh/id_rsa ubuntu@43.203.232.106 << 'EOF'
-#          pkill -f demo-0.0.1.jar
-#          nohup java -jar /home/ubuntu/deploy/demo-0.0.1.jar > /dev/null 2>&1 &
-#          EOF
+name: Deploy to EC2 # 워크 플로우 이름
+
+on:  # 트리거(실행)되는 조건
+ push:
+   branches:
+     - main  # main 브랜치가 푸시될 때마다 실행 되도록 설정
+
+jobs:  # 실행할 작업을 정의
+ deploy:
+   runs-on: ubuntu-latest # 작업 실행 환경 정의 // linux의 ubuntu환경에서 실행
+
+   steps:
+     - name: Checkout the repository # 체크아웃이란 해당 브랜치로 이동하는 걸 의미
+       uses: actions/checkout@v2   # 깃헙 액션에는 여러버전이 있는데, 그 중 v2를 사용하겠다는 의미
+
+     - name: Set up SSH 
+       uses: webfactory/ssh-agent@v0.5.3 # 서드파티 액션 (깃헙에 올라와 있는 공유된 파일)
+       with:
+         ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}  # GitHub Secrets에서 설정한 비공개 키를 가져옵니다. (이름 같아야 함)
+
+     - name: Build the JAR file  # 서버 실행 시, 자동으로 빌드 되도록.
+       run: ./gradlew build
+
+     - name: Copy JAR file to EC2 # 바로 위 자동으로 빌드한 파일을 ec2 가상서버로 전송(복사) 하는 과정
+       run: |           # -p 옵션을 사용하여, 만약 이미 파일이 있더라도 오류가 생기지 않도록 설정 (-p는 parent라는 의미, 디렉토리 생성 시, 부모 디렉토리 없다면 생성 옵션)
+         mkdir -p ~/.ssh   
+         ssh-keyscan -H 43.203.232.106 >> ~/.ssh/known_hosts  # EC2 서버의 호스트 키 추가 (내 ec2 가상 서버의 주소)
+         scp -i ~/.ssh/id_rsa build/libs/demo-0.0.1.jar ubuntu@43.203.232.106:/home/ubuntu/deploy/  # 비공개 키를 GitHub Secrets에서 가져옴
+         # scp(secure copy protocol)을 통하여, 나의 jar파일을 ubuntu서버로 배포
+
+     - name: Deploy JAR file on EC2 # EOF는 파일의 끝을 나타내는 구분자, pkill -f는 새로운 실행 전에 이전 실행 중인 프로세스를 종료하는 명령어
+       run: |
+         ssh -i ~/.ssh/id_rsa ubuntu@43.203.232.106 << 'EOF' 
+         pkill -f demo-0.0.1.jar  
+         nohup java -jar /home/ubuntu/deploy/demo-0.0.1.jar > /dev/null 2>&1 &
+         EOF
